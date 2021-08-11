@@ -1,6 +1,6 @@
 # Kerberus Dashboard Frontend
 
-List of customizations
+### List of customizations
 
 ```
 - Placeholder in search input (node_modules/@backstage/plugin-search/dist/index.esm.js)
@@ -9,13 +9,13 @@ List of customizations
 - Public favicon and index.htm (packages/app/public)
 ```
 
-Preinstalled plugins
+### Preinstalled plugins
 
 ```
 - Kubernetes
 ```
 
-Sample docker-compose.yaml
+### Sample docker-compose.yaml
 
 ```
 version: '3.7'
@@ -29,3 +29,9 @@ services:
     ports:
       - 3000:8080
 ```
+
+### CI - Build/Deploy
+
+Automatic build and deploy start only when you push new tag.
+
+> Version in package.json **must** follow the tag of the push.
