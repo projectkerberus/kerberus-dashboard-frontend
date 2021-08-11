@@ -39,7 +39,9 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ghcr.io/projectkerberus/kerberus-dashboard-frontend:${{steps.tag.outputs.tag}}
+          image: ghcr.io/projectkerberus/kerberus-dashboard-frontend
+          tags: ${{steps.tag.outputs.tag}}
+          addLatest: true
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Image digest
