@@ -26,9 +26,22 @@ jobs:
       - name: Get tag
         id: tag
         uses: dawidd6/action-get-tag@v1
-      - name: Log into registry
-        if: github.event_name != 'pull_request'
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Clean tag
+        id: clean_tag
+        uses: mad9000/actions-find-and-replace-string@2
+        with:
+          source: ${{ steps.tag.outputs.tag }}
+          find: "v"
+          replace: ""
+      # - name: Log into registry
+      #   if: github.event_name != 'pull_request'
+      #   run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
@@ -36,7 +49,7 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ghcr.io/projectkerberus/kerberus-dashboard-frontend:${{steps.tag.outputs.tag}}
+          tags: ghcr.io/projectkerberus/kerberus-dashboard-frontend:${{steps.clean_tag.outputs.main}}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Image digest
