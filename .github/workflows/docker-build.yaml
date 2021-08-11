@@ -2,8 +2,6 @@ name: Push Image to Docker hub
 
 on:
   push:
-    branches:
-      - main
     tags:
       - v*
 
@@ -37,12 +35,12 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          context: ./
+          # context: ./
           file: ./Dockerfile
-          builder: ${{ steps.buildx.outputs.name }}
+          # builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: projectkerberus/kerberus-dashboard-frontend:${{ steps.get_version.outputs.VERSION }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+          # cache-from: type=local,src=/tmp/.buildx-cache
+          # cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
