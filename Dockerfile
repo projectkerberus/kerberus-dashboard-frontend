@@ -4,7 +4,8 @@ WORKDIR /app
 COPY . ./
 RUN yarn && rm -rf /root/.cache
 COPY node_modules/@backstage ./node_modules/@backstage
-CMD ["yarn", "workspace", "app", "start"]
+EXPOSE 3000
+CMD ["yarn", "start"]
 
 # server environment
 # FROM nginx:alpine
