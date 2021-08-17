@@ -15,21 +15,6 @@
 - Kubernetes
 ```
 
-### Sample docker-compose.yaml
-
-```
-version: '3.7'
-
-services:
-  kerberus.fe:
-    build: .
-    container_name: kerberus.fe
-    image: prokjectkerberus/kerberus-dashboard-frontend
-    restart: always
-    ports:
-      - 3000:8080
-```
-
 ### CI - Build/Deploy
 
 Automatic build and deploy start only when you push new tag.
