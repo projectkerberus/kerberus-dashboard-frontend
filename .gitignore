@@ -1,6 +1,7 @@
 # macOS
 .DS_Store
 docker-compose.yaml
+.dccache
 
 # Logs
 logs
