@@ -55,6 +55,10 @@ import {
 import { EntityTechdocsContent } from '@backstage/plugin-techdocs';
 import { EmptyState } from '@backstage/core-components';
 import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
+import {
+  EntityArgoCDOverviewCard,
+  isArgocdAvailable,
+} from '@roadiehq/backstage-plugin-argo-cd';
 
 const cicdContent = (
   // This is an example of how you can implement your company's logic in entity page.
@@ -92,11 +96,19 @@ const overviewContent = (
         </Grid>
       </EntitySwitch.Case>
     </EntitySwitch>
-    
+
     <EntitySwitch>
       <EntitySwitch.Case if={hasCatalogProcessingErrors}>
         <Grid item xs={12}>
           <EntityProcessingErrorsPanel />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+
+    <EntitySwitch>
+      <EntitySwitch.Case if={e => Boolean(isArgocdAvailable(e))}>
+        <Grid item sm={4}>
+          <EntityArgoCDOverviewCard />
         </Grid>
       </EntitySwitch.Case>
     </EntitySwitch>

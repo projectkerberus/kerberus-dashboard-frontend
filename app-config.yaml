@@ -62,6 +62,8 @@ techdocs:
 
 auth:
   providers:
+    guest:
+      enabled: "true"
     github:
       development:
         clientId: cc2d30774e863e086d88

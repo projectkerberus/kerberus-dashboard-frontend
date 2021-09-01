@@ -22,13 +22,14 @@ import { Root } from './components/Root';
 import {
   AlertDisplay,
   OAuthRequestDialog,
+  SignInPage,
   SignInProviderConfig,
 } from '@backstage/core-components';
 import { createApp, FlatRoutes } from '@backstage/core-app-api';
 
 import {
   githubAuthApiRef,
-  samlAuthApiRef,
+  microsoftAuthApiRef,
   gitlabAuthApiRef,
 } from '@backstage/core-plugin-api';
 
@@ -46,51 +47,36 @@ const gitlabProvider: SignInProviderConfig = {
   apiRef: gitlabAuthApiRef,
 };
 
-// const microsoftProvider: SignInProviderConfig = {
-//   id: 'microsoft-auth-provider',
-//   title: 'Microsoft',
-//   message: 'Sign in using Microsoft',
-//   apiRef: microsoftAuthApiRef,
-// };
-
-// const googleProvider: SignInProviderConfig = {
-//   id: 'google-auth-provider',
-//   title: 'Google',
-//   message: 'Sign in using Google',
-//   apiRef: googleAuthApiRef,
-// };
-
-const samlProvider: SignInProviderConfig = {
-  id: 'saml-auth-provider',
-  title: 'Saml',
-  message: 'Sign in using Saml',
-  apiRef: samlAuthApiRef,
+const microsoftProvider: SignInProviderConfig = {
+  id: 'microsoft-auth-provider',
+  title: 'Microsoft',
+  message: 'Sign in using Microsoft',
+  apiRef: microsoftAuthApiRef,
 };
 
 /* AUTH */
 const enabledProviders: any = [];
 
-if (process.env.AUTH_GUEST === 'true') {
-  enabledProviders.push('guest');
-}
+// if (process.env.AUTH_GUEST === 'true') {
+enabledProviders.push('guest');
+// }
 if (process.env.AUTH_GITHUB_CLIENT_ID !== '') {
   enabledProviders.push(githubProvider);
 }
 if (process.env.AUTH_GITLAB_CLIENT_ID !== '') {
   enabledProviders.push(gitlabProvider);
 }
-// if (process.env.AUTH_GOOGLE_CLIENT_ID !== '') {
-//   enabledProviders.push(googleProvider);
-// }
-// if (process.env.AUTH_MICROSOFT_CLIENT_ID !== '') {
-//   enabledProviders.push(microsoftProvider);
-// }
-// if (process.env.AUTH_SAML_ENTRY_POINT !== '') {
-// enabledProviders.push(samlProvider);
-// }
+if (process.env.AUTH_MICROSOFT_CLIENT_ID !== '') {
+  enabledProviders.push(microsoftProvider);
+}
 
 const app = createApp({
   apis,
+  components: {
+    SignInPage: props => (
+      <SignInPage {...props} auto providers={enabledProviders} />
+    ),
+  },
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
       createComponent: scaffolderPlugin.routes.root,
