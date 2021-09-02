@@ -54,11 +54,11 @@ import {
 } from '@backstage/plugin-org';
 import { EntityTechdocsContent } from '@backstage/plugin-techdocs';
 import { EmptyState } from '@backstage/core-components';
-import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
 import {
   EntityArgoCDOverviewCard,
   isArgocdAvailable,
 } from '@roadiehq/backstage-plugin-argo-cd';
+import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
 
 const cicdContent = (
   // This is an example of how you can implement your company's logic in entity page.
@@ -87,8 +87,8 @@ const cicdContent = (
   </EntitySwitch>
 );
 
-const overviewContent = (
-  <Grid container spacing={3} alignItems="stretch">
+const entityWarningContent = (
+  <>
     <EntitySwitch>
       <EntitySwitch.Case if={isOrphan}>
         <Grid item xs={12}>
@@ -104,20 +104,25 @@ const overviewContent = (
         </Grid>
       </EntitySwitch.Case>
     </EntitySwitch>
+  </>
+);
 
-    <Grid item md={6}>
+const overviewContent = (
+  <Grid container spacing={3} alignItems="stretch">
+    {entityWarningContent}
+    <Grid item md={8}>
       <EntityAboutCard variant="gridItem" />
     </Grid>
     <Grid item md={4} xs={12}>
       <EntityLinksCard />
     </Grid>
-    <Grid item md={8} xs={12}>
+    <Grid item md={12} xs={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
     </Grid>
 
     <EntitySwitch>
       <EntitySwitch.Case if={e => Boolean(isArgocdAvailable(e))}>
-        <Grid item sm={4}>
+        <Grid item md={12}>
           <EntityArgoCDOverviewCard />
         </Grid>
       </EntitySwitch.Case>
@@ -231,8 +236,12 @@ const apiPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3}>
+        {entityWarningContent}
         <Grid item md={6}>
           <EntityAboutCard />
+        </Grid>
+        <Grid item md={4} xs={12}>
+          <EntityLinksCard />
         </Grid>
         <Grid container item md={12}>
           <Grid item md={6}>
@@ -259,6 +268,7 @@ const userPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3}>
+        {entityWarningContent}
         <Grid item xs={12} md={6}>
           <EntityUserProfileCard variant="gridItem" />
         </Grid>
@@ -274,6 +284,7 @@ const groupPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3}>
+        {entityWarningContent}
         <Grid item xs={12} md={6}>
           <EntityGroupProfileCard variant="gridItem" />
         </Grid>
@@ -292,6 +303,7 @@ const systemPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3} alignItems="stretch">
+        {entityWarningContent}
         <Grid item md={6}>
           <EntityAboutCard variant="gridItem" />
         </Grid>
@@ -316,6 +328,7 @@ const domainPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3} alignItems="stretch">
+        {entityWarningContent}
         <Grid item md={6}>
           <EntityAboutCard variant="gridItem" />
         </Grid>

@@ -2,6 +2,8 @@
 .DS_Store
 docker-compose.yaml
 .dccache
+_app-config.yaml
+__app-config.yaml
 
 # Logs
 logs

@@ -13,7 +13,12 @@ import {
 import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
 import { SearchPage } from '@backstage/plugin-search';
 import { TechRadarPage } from '@backstage/plugin-tech-radar';
-import { TechdocsPage } from '@backstage/plugin-techdocs';
+import {
+  DefaultTechDocsHome,
+  TechDocsIndexPage,
+  techdocsPlugin,
+  TechDocsReaderPage,
+} from '@backstage/plugin-techdocs';
 import { UserSettingsPage } from '@backstage/plugin-user-settings';
 import { apis } from './apis';
 import { entityPage } from './components/catalog/EntityPage';
@@ -60,15 +65,15 @@ const enabledProviders: any = [];
 // if (process.env.AUTH_GUEST === 'true') {
 enabledProviders.push('guest');
 // }
-if (process.env.AUTH_GITHUB_CLIENT_ID !== '') {
-  enabledProviders.push(githubProvider);
-}
+// if (process.env.AUTH_GITHUB_CLIENT_ID !== '') {
+enabledProviders.push(githubProvider);
+// }
 if (process.env.AUTH_GITLAB_CLIENT_ID !== '') {
   enabledProviders.push(gitlabProvider);
 }
-if (process.env.AUTH_MICROSOFT_CLIENT_ID !== '') {
-  enabledProviders.push(microsoftProvider);
-}
+// if (process.env.AUTH_MICROSOFT_CLIENT_ID !== '') {
+enabledProviders.push(microsoftProvider);
+// }
 
 const app = createApp({
   apis,
@@ -80,6 +85,7 @@ const app = createApp({
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
       createComponent: scaffolderPlugin.routes.root,
+      viewTechDoc: techdocsPlugin.routes.docRoot,
     });
     bind(apiDocsPlugin.externalRoutes, {
       createComponent: scaffolderPlugin.routes.root,
@@ -95,7 +101,7 @@ const AppRouter = app.getRouter();
 
 const routes = (
   <FlatRoutes>
-    <Navigate key="/" to="/catalog" />
+    <Navigate key="/" to="catalog" />
     <Route path="/catalog" element={<CatalogIndexPage />} />
     <Route
       path="/catalog/:namespace/:kind/:name"
@@ -103,7 +109,13 @@ const routes = (
     >
       {entityPage}
     </Route>
-    <Route path="/docs" element={<TechdocsPage />} />
+    <Route path="/docs" element={<TechDocsIndexPage />}>
+      <DefaultTechDocsHome />
+    </Route>
+    <Route
+      path="/docs/:namespace/:kind/:name/*"
+      element={<TechDocsReaderPage />}
+    />
     <Route path="/create" element={<ScaffolderPage />} />
     <Route path="/api-docs" element={<ApiExplorerPage />} />
     <Route
