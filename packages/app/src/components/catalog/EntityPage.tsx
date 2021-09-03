@@ -59,6 +59,7 @@ import {
   isArgocdAvailable,
 } from '@roadiehq/backstage-plugin-argo-cd';
 import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
+import { EntitySonarQubeCard } from '@backstage/plugin-sonarqube';
 
 const cicdContent = (
   // This is an example of how you can implement your company's logic in entity page.
@@ -116,8 +117,12 @@ const overviewContent = (
     <Grid item md={4} xs={12}>
       <EntityLinksCard />
     </Grid>
-    <Grid item md={12} xs={12}>
+    <Grid item md={6} xs={6}>
       <EntityHasSubcomponentsCard variant="gridItem" />
+    </Grid>
+
+    <Grid item md={6}>
+      <EntitySonarQubeCard variant="gridItem" />
     </Grid>
 
     <EntitySwitch>
