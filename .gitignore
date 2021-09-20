@@ -4,6 +4,7 @@ docker-compose.yaml
 .dccache
 _app-config.yaml
 __app-config.yaml
+yarn.lock
 
 # Logs
 logs
