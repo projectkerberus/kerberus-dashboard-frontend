@@ -38,6 +38,8 @@ import {
   gitlabAuthApiRef,
 } from '@backstage/core-plugin-api';
 
+import { CostInsightsPage } from '@backstage/plugin-cost-insights';
+
 const githubProvider: SignInProviderConfig = {
   id: 'github-auth-provider',
   title: 'GitHub',
@@ -125,6 +127,7 @@ const routes = (
     <Route path="/catalog-import" element={<CatalogImportPage />} />
     <Route path="/search" element={<SearchPage />} />
     <Route path="/settings" element={<UserSettingsPage />} />
+    <Route path="/cost-insights" element={<CostInsightsPage />} />
   </FlatRoutes>
 );
 

@@ -36,6 +36,7 @@ import {
   SidebarSpace,
   SidebarScrollWrapper,
 } from '@backstage/core-components';
+import MoneyIcon from '@material-ui/icons/MonetizationOn';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
@@ -83,9 +84,10 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
       <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
       {/* End global nav */}
       <SidebarDivider />
-      <SidebarScrollWrapper>
+      {/* <SidebarScrollWrapper>
         <SidebarItem icon={MapIcon} to="tech-radar" text="Tech Radar" />
-      </SidebarScrollWrapper>
+        <SidebarItem icon={MoneyIcon} to="cost-insights" text="Cost Insights" />
+      </SidebarScrollWrapper> */}
       <SidebarSpace />
       <SidebarDivider />
       <SidebarSettings />
