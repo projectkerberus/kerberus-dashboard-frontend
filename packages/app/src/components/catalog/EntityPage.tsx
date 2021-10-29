@@ -138,6 +138,9 @@ const overviewContent = (
     <Grid item md={6}>
       <EntityGrafanaDashboardsCard />
     </Grid>
+    <Grid item md={6}>
+      <EntityGrafanaAlertsCard />
+    </Grid>
 
     <EntitySwitch>
       <EntitySwitch.Case if={e => Boolean(isArgocdAvailable(e))}>
@@ -147,18 +150,11 @@ const overviewContent = (
       </EntitySwitch.Case>
     </EntitySwitch>
 
-    <Grid item md={8}>
+    <Grid item md={6}>
       <EntityPrometheusAlertCard />
     </Grid>
     <Grid item md={6}>
       <EntityPrometheusGraphCard />
-    </Grid>
-
-    <Grid item md={6}>
-      <EntityGrafanaAlertsCard />
-    </Grid>
-    <Grid item md={6}>
-      <EntityGrafanaDashboardsCard />
     </Grid>
   </Grid>
 );
