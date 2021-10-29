@@ -54,21 +54,22 @@ import {
 } from '@backstage/plugin-org';
 import { EntityTechdocsContent } from '@backstage/plugin-techdocs';
 import { EmptyState } from '@backstage/core-components';
-import {
-  EntityArgoCDOverviewCard,
-  isArgocdAvailable,
-} from '@roadiehq/backstage-plugin-argo-cd';
 import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
-import { EntitySonarQubeCard } from '@backstage/plugin-sonarqube';
-import {
-  EntityGrafanaAlertsCard,
-  EntityGrafanaDashboardsCard,
-} from '@k-phoen/backstage-plugin-grafana';
 import {
   EntityPrometheusContent,
   EntityPrometheusAlertCard,
   EntityPrometheusGraphCard,
 } from '@roadiehq/backstage-plugin-prometheus';
+import {
+  EntityGrafanaAlertsCard,
+  EntityGrafanaDashboardsCard,
+} from '@k-phoen/backstage-plugin-grafana';
+import {
+  EntityArgoCDOverviewCard,
+  isArgocdAvailable,
+} from '@roadiehq/backstage-plugin-argo-cd';
+import { EntitySonarQubeCard } from '@backstage/plugin-sonarqube';
+import { EntityGithubInsightsContent } from '@roadiehq/backstage-plugin-github-insights';
 
 const cicdContent = (
   // This is an example of how you can implement your company's logic in entity page.
@@ -123,17 +124,19 @@ const overviewContent = (
     <Grid item md={8}>
       <EntityAboutCard variant="gridItem" />
     </Grid>
-
     <Grid item md={4} xs={12}>
       <EntityLinksCard />
     </Grid>
-
-    <Grid item md={6} xs={6}>
+    <Grid item md={6} xs={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
     </Grid>
 
     <Grid item md={6}>
       <EntitySonarQubeCard variant="gridItem" />
+    </Grid>
+
+    <Grid item md={6}>
+      <EntityGrafanaDashboardsCard />
     </Grid>
 
     <EntitySwitch>
@@ -144,19 +147,19 @@ const overviewContent = (
       </EntitySwitch.Case>
     </EntitySwitch>
 
+    <Grid item md={8}>
+      <EntityPrometheusAlertCard />
+    </Grid>
+    <Grid item md={6}>
+      <EntityPrometheusGraphCard />
+    </Grid>
+
     <Grid item md={6}>
       <EntityGrafanaAlertsCard />
     </Grid>
     <Grid item md={6}>
       <EntityGrafanaDashboardsCard />
     </Grid>
-
-    {/* <Grid item md={8}>
-      <EntityPrometheusAlertCard />
-    </Grid>
-    <Grid item md={6}>
-      <EntityPrometheusGraphCard />
-    </Grid> */}
   </Grid>
 );
 
@@ -202,6 +205,10 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/prometheus" title="Prometheus">
       <EntityPrometheusContent />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/code-insights" title="Code Insights">
+      <EntityGithubInsightsContent />
     </EntityLayout.Route>
   </EntityLayout>
 );

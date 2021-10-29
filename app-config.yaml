@@ -1,9 +1,11 @@
 app:
-  title: Project Kerberus Backend
+  title: Project Kerberus App
   baseUrl: http://localhost:3000
+  listen:
+    host: 0.0.0.0
 
 organization:
-  name: My Company
+  name: Kiratech
 
 backend:
   baseUrl: http://localhost:7000
@@ -21,10 +23,10 @@ backend:
   database:
     client: pg
     connection:
-      host: localhost
-      port: 5432
-      user: username
-      password: password
+      host: ${POSTGRES_HOST}
+      port: ${POSTGRES_PORT}
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
       # https://node-postgres.com/features/ssl
       #ssl: require # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
       #ca: # if you have a CA file and want to verify it you can uncomment this section
@@ -36,20 +38,19 @@ backend:
 integrations:
   github:
     - host: github.com
-      token: <token>
+      token: ${GITHUB_TOKEN}
     ### Example for how to add your GitHub Enterprise instance using the API:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
 
 proxy:
-  "/argocd/api":
-    target: https://argocd.projectx.kiratech.net
+  "/test":
+    target: "https://example.com"
     changeOrigin: true
-    secure: false
-    headers:
-      Cookie:
-        $env: ARGOCD_AUTH_TOKEN
+
+grafana:
+  domain: https://grafana.krateo.io
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
@@ -63,101 +64,60 @@ techdocs:
     type: "local" # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
 auth:
-  # see https://backstage.io/docs/auth/ to learn about auth providers
   providers:
-    microsoft:
-      development:
-        clientId: <token>
-        clientSecret: <token>
-        tenantId: <token>
+    guest:
+      enabled: "true"
     github:
       development:
-        clientId: <token>
-        clientSecret: <token>
+        clientId: cc2d30774e863e086d88
+        clientSecret: 3b6e1f00dbb7a711947bf269435505a5d02b3fa3
 
 scaffolder:
   github:
-    token: ${GITHUB_TOKEN}
+    token: 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
     visibility: public # or 'internal' or 'private'
 
 catalog:
-  processors:
-    microsoftGraphOrg:
-      providers:
-        - target: https://graph.microsoft.com/v1.0
-          authority: https://login.microsoftonline.com
-          # If you don't know you tenantId, you can use Microsoft Graph Explorer
-          # to query it
-          tenantId: <token>
-          # Client Id and Secret can be created under Certificates & secrets in
-          # the App registration in the Microsoft Azure Portal.
-          clientId: <token>
-          clientSecret: <token>
-          # Optional filter for user, see Microsoft Graph API for the syntax
-          # See https://docs.microsoft.com/en-us/graph/api/resources/user?view=graph-rest-1.0#properties
-          # and for the syntax https://docs.microsoft.com/en-us/graph/query-parameters#filter-parameter
-          userFilter: accountEnabled eq true
-          # Optional filter for group, see Microsoft Graph API for the syntax
-          # See https://docs.microsoft.com/en-us/graph/api/resources/group?view=graph-rest-1.0#properties
-          groupFilter: securityEnabled eq false
-
   rules:
     - allow: [Component, System, API, Group, User, Resource, Location]
   locations:
-    # Backstage example components
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-components.yaml
-    # Backstage example systems
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-systems.yaml
-    # Backstage example APIs
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-apis.yaml
-    # Backstage example resources
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-resources.yaml
-    # Backstage example organization groups
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme/org.yaml
-    # Backstage example templates
-    # - type: url
-    #   target: https://github.com/backstage/software-templates/blob/main/scaffolder-templates/react-ssr-template/template.yaml
-    #   rules:
-    #     - allow: [Template]
-    # - type: url
-    #   target: https://github.com/backstage/software-templates/blob/main/scaffolder-templates/springboot-grpc-template/template.yaml
-    #   rules:
-    #     - allow: [Template]
-    # - type: url
-    #   target: https://github.com/spotify/cookiecutter-golang/blob/master/template.yaml
-    #   rules:
-    #     - allow: [Template]
-    # - type: url
-    #   target: https://github.com/backstage/software-templates/blob/main/scaffolder-templates/docs-template/template.yaml
-    #   rules:
-    #     - allow: [Template]
-    # - type: url
-    #   target: https://github.com/projectkerberus/gcp-stack-template/blob/main/template-beta.yaml
-    #   rules:
-    #     - allow: [Template]
-    - type: microsoft-graph-org
-      target: https://graph.microsoft.com/v1.0
-      # If you catalog doesn't allow to import Group and User entities by
-      # default, allow them here
+    - type: url
+      target: https://github.com/projectkerberus/gcp-stack-template/blob/main/template-beta.yaml
       rules:
-        - allow: [Group, User]
+        - allow: [Template]
 
-kubernetes:
-  serviceLocatorMethod:
-    type: "multiTenant"
-  clusterLocatorMethods:
-    - type: "config"
-      clusters:
-        - url: http://127.0.0.1:9999
-          name: minikube
-          authProvider: "serviceAccount"
-          skipTLSVerify: false
-          serviceAccountToken: ${K8S_MINIKUBE_TOKEN}
-        - url: http://127.0.0.2:9999
-          name: aws-cluster-1
-          authProvider: "aws"
+costInsights:
+  engineerCost: 900000
+  products:
+    events:
+      name: Events
+      icon: data
+    # computeEngine:
+    #   name: Compute Engine
+    #   icon: compute
+    # cloudDataflow:
+    #   name: Cloud Dataflow
+    #   icon: data
+    # cloudStorage:
+    #   name: Cloud Storage
+    #   icon: storage
+    # bigQuery:
+    #   name: BigQuery
+    #   icon: search
+  metrics:
+    DAU:
+      name: Daily Active Users
+      default: true
+    MSC:
+      name: Monthly Subscribers
+  # currencies:
+  #   metricA:
+  #     currencyA:
+  #       label: Currency A
+  #       unit: Unit A
+  #     currencyB:
+  #       label: Currency B
+  #       kind: CURRENCY_B
+  #       unit: Unit B
+  #       prefix: B
+  #       rate: 3.5
