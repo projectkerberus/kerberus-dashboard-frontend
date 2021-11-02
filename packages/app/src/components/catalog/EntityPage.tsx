@@ -149,13 +149,6 @@ const overviewContent = (
         </Grid>
       </EntitySwitch.Case>
     </EntitySwitch>
-
-    <Grid item md={6}>
-      <EntityPrometheusAlertCard />
-    </Grid>
-    <Grid item md={6}>
-      <EntityPrometheusGraphCard />
-    </Grid>
   </Grid>
 );
 
